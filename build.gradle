@@ -47,6 +47,11 @@ dependencies {
     //s3
     implementation platform('io.awspring.cloud:spring-cloud-aws-dependencies:3.0.1')
     implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
+
+    //swagger
+
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.5.0'
 }
 
 
