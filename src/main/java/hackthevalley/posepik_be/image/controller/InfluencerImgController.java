@@ -4,13 +4,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import hackthevalley.posepik_be.image.entity.InfluencerImgEntity;
 import hackthevalley.posepik_be.image.repository.InfluencerImgRepository;
 import hackthevalley.posepik_be.image.repository.UserImgRepository;
-import hackthevalley.posepik_be.user.entity.UserEntity;
 import hackthevalley.posepik_be.user.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +32,7 @@ public class InfluencerImgController {
         .map(
             influencerImage ->
                 Map.<String, Object>of( // 명시적으로 타입 설정
-                    "InfluencerImgId", influencerImage.getId(),
+                    "InfluencerImgId", influencerImage.getInfluencerImgId(),
                     "imgInfluencerUrl", influencerImage.getImgInfluencerUrl(),
                     "latitude", influencerImage.getLocation().getLatitude(),
                     "longitude", influencerImage.getLocation().getLongitude(),
@@ -56,7 +54,7 @@ public class InfluencerImgController {
         .map(
             influencerImage ->
                 Map.<String, Object>of(
-                    "InfluencerImgId", influencerImage.getId(),
+                    "InfluencerImgId", influencerImage.getInfluencerImgId(),
                     "imgInfluencerUrl", influencerImage.getImgInfluencerUrl(),
                     "comment", influencerImage.getComment(),
                     "country", influencerImage.getLocation().getCountry(),
@@ -76,7 +74,7 @@ public class InfluencerImgController {
         .map(
             influencerImage ->
                 Map.<String, Object>of(
-                    "InfluencerImgId", influencerImage.getId(),
+                    "InfluencerImgId", influencerImage.getInfluencerImgId(),
                     "imgInfluencerUrl", influencerImage.getImgInfluencerUrl(),
                     "comment", influencerImage.getComment(),
                     "photoTip", influencerImage.getComment(),
@@ -85,27 +83,27 @@ public class InfluencerImgController {
         .collect(Collectors.toList());
   }
 
-  @Operation(summary = "랭킹 업데이트")
-  @PostMapping("/rankupdate")
-  public ResponseEntity<String> rankUpdate(@RequestParam("nickname") String nickname) {
-    // 1. 닉네임 중복 확인
-    if (userRepository.existsByNickname(nickname)) {
-      return ResponseEntity.badRequest().body("이미 존재하는 닉네임입니다.");
-    }
-
-    // 2. 새로운 유저 생성
-    UserEntity newUser = new UserEntity();
-    newUser.setNickname(nickname);
-//    UserEntity savedUser = userRepository.save(newUser);
-//
-//    // 3. 해당 유저의 이미지 업데이트
-//    List<ImageEntity> userImages = imageRepository.findByUserId(savedUser.getUserId());
-//    for (ImageEntity image : userImages) {
-//      image.setUpdate(true);
-//    }
-//    imageRepository.saveAll(userImages);
-
-    // 4. 응답 반환
-    return ResponseEntity.ok("유저가 성공적으로 추가되었고 이미지가 업데이트되었습니다.");
-  }
+  //  @Operation(summary = "랭킹 업데이트")
+  //  @PostMapping("/rankupdate")
+  //  public ResponseEntity<String> rankUpdate(@RequestParam("nickname") String nickname) {
+  //    // 1. 닉네임 중복 확인
+  //    if (userRepository.existsByNickname(nickname)) {
+  //      return ResponseEntity.badRequest().body("이미 존재하는 닉네임입니다.");
+  //    }
+  //
+  //    // 2. 새로운 유저 생성
+  //    UserEntity newUser = new UserEntity();
+  //    newUser.setNickname(nickname);
+  //    //    UserEntity savedUser = userRepository.save(newUser);
+  //    //
+  //    //    // 3. 해당 유저의 이미지 업데이트
+  //    //    List<ImageEntity> userImages = imageRepository.findByUserId(savedUser.getUserId());
+  //    //    for (ImageEntity image : userImages) {
+  //    //      image.setUpdate(true);
+  //    //    }
+  //    //    imageRepository.saveAll(userImages);
+  //
+  //    // 4. 응답 반환
+  //    return ResponseEntity.ok("유저가 성공적으로 추가되었고 이미지가 업데이트되었습니다.");
+  //  }
 }

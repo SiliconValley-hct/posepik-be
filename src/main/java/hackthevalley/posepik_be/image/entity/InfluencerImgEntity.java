@@ -13,8 +13,7 @@ import lombok.Setter;
 public class InfluencerImgEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "influencerImg_id")
-  private Long id;
+  private Long influencerImgId;
 
   @ManyToOne
   @JoinColumn(name = "location_id", nullable = false)

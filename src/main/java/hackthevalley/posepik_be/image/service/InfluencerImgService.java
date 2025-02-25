@@ -22,7 +22,7 @@ public class InfluencerImgService {
 
     // 엔티티 객체로부터 직접 데이터를 가져오기
     return Map.of(
-        "mappingId", influencerImage.getId(),
+        "InfluencerImgId", influencerImage.getInfluencerImgId(),
         "imgInfluencerUrl", influencerImage.getImgInfluencerUrl(),
         "photoTip", influencerImage.getPhotoTip(),
         "latitude", influencerImage.getLocation().getLatitude(),

@@ -10,7 +10,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "userImg")
+@Table(name = "user_img")
 public class UserImgEntity {
 
   @Id
@@ -22,13 +22,12 @@ public class UserImgEntity {
   @JoinColumn(name = "location_id", nullable = false)
   private LocationEntity location;
 
-  @ManyToOne
-  @JoinColumn(name = "user_id", nullable = false)
-  private UserEntity user;
-
   private String imgUrl;
   private Double accuracy;
 
-  @Column(nullable = false)
+  @OneToOne(mappedBy = "image")
+  private UserEntity user;
+
+  @Column(name = "is_update")
   private boolean update;
 }
