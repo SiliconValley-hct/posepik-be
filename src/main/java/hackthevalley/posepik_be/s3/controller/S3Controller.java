@@ -1,5 +1,7 @@
 package hackthevalley.posepik_be.s3.controller;
 
+import java.awt.*;
+import java.io.*;
 import java.io.IOException;
 
 import org.springframework.http.MediaType;
@@ -31,6 +33,7 @@ public class S3Controller {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
     try {
+      System.out.println(">>>>>>>>>zj컨트롤러");
       String fileUrl = s3Service.uploadFile(file);
       return ResponseEntity.ok(fileUrl);
     } catch (IOException e) {

@@ -19,7 +19,6 @@ import org.bytedeco.javacpp.FloatPointer;
 import org.bytedeco.javacpp.IntPointer;
 import org.bytedeco.opencv.global.opencv_core;
 import org.bytedeco.opencv.global.opencv_imgcodecs;
-import org.bytedeco.opencv.global.opencv_imgproc;
 import org.bytedeco.opencv.opencv_core.*;
 import org.bytedeco.opencv.opencv_core.Point;
 import org.bytedeco.opencv.opencv_features2d.*;
@@ -103,13 +102,16 @@ public class ImageSimilarityService {
 
     double ssimScore = calculateSSIM(img1, img2);
     double orbScore = calculateORB(img1, img2);
-    //    double histScore = compareHistograms(img1, img2);
+    double histoScore = compareHistograms(img1, img2);
 
-    System.out.println("SSIM 유사도: " + ssimScore);
-    //    System.out.println("ORB 특징 유사도: " + orbScore);
+    System.out.println("SSIM 유사도: " + ssimScore * 100);
+    System.out.println("ORB 특징 유사도: " + orbScore);
+    System.out.println("Histo 특징 유사도: " + (histoScore + 1) * 100 / 2);
 
-    //    System.out.println("점수: " + ((100 * ssimScore) / 2 + ((orbScore / 44) * 100) / 2));
-    System.out.println("점수: " + ((100 * ssimScore)));
+    double finalScore = (ssimScore * 30) + ((histoScore + 1) / 2 * 70);
+
+    System.out.println("점수: " + finalScore);
+    //    System.out.println("점수: " + ((100 * ssimScore)));
 
     //    System.out.println("히스토그램 유사도: " + histScore);
 
@@ -198,28 +200,52 @@ public class ImageSimilarityService {
   }
 
   // 📌 히스토그램 비교를 이용한 유사도 계산
+
+  //  import static org.bytedeco.opencv.global.opencv_core.*;
+  // import static org.bytedeco.opencv.global.opencv_imgproc.*;
+
   public static double compareHistograms(Mat img1, Mat img2) {
-    Mat hist1 = new Mat(), hist2 = new Mat();
+    Mat hsvImg1 = new Mat();
+    Mat hsvImg2 = new Mat();
 
-    // 히스토그램 계산을 위한 인자 세팅
-    MatVector images1 = new MatVector(img1);
-    MatVector images2 = new MatVector(img2);
-    IntPointer channels = new IntPointer(1);
-    Mat mask = new Mat();
-    IntPointer histSize = new IntPointer(256);
-    FloatPointer ranges = new FloatPointer(1f, 256f);
+    // Convert images to HSV color space
+    cvtColor(img1, hsvImg1, COLOR_BGR2HSV);
+    cvtColor(img2, hsvImg2, COLOR_BGR2HSV);
 
-    // 첫 번째 이미지 히스토그램 계산
-    opencv_imgproc.calcHist(images1, channels, mask, hist1, histSize, ranges);
+    // Define parameters for histogram
+    int hBins = 50;
+    int sBins = 60;
+    int[] histSize = {hBins, sBins};
+    float[] rangesArray = {0f, 180f, 0f, 256f}; // Combined hRanges and sRanges
+    FloatPointer ranges = new FloatPointer(rangesArray);
+    int[] channels = {0, 1};
 
-    // 두 번째 이미지 히스토그램 계산
-    opencv_imgproc.calcHist(images2, channels, mask, hist2, histSize, ranges);
+    Mat histImg1 = new Mat();
+    Mat histImg2 = new Mat();
 
-    // 히스토그램 정규화
-    opencv_core.normalize(hist1, hist1);
-    opencv_core.normalize(hist2, hist2);
+    // Compute the histograms
+    calcHist(
+        new MatVector(hsvImg1),
+        new IntPointer(channels),
+        new Mat(),
+        histImg1,
+        new IntPointer(histSize),
+        ranges);
+    calcHist(
+        new MatVector(hsvImg2),
+        new IntPointer(channels),
+        new Mat(),
+        histImg2,
+        new IntPointer(histSize),
+        ranges);
 
-    // 히스토그램 비교
-    return opencv_imgproc.compareHist(hist1, hist2, opencv_imgproc.HISTCMP_CORREL);
+    // Normalize the histograms
+    normalize(histImg1, histImg1, 0, 1, NORM_MINMAX, -1, new Mat());
+    normalize(histImg2, histImg2, 0, 1, NORM_MINMAX, -1, new Mat());
+
+    // Compare histograms using correlation method
+    double similarity = compareHist(histImg1, histImg2, HISTCMP_CORREL);
+
+    return similarity;
   }
 }
