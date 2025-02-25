@@ -24,4 +24,5 @@ public class InfluencerImgEntity {
   private String outlineImgUrl;
   private String imgInfluencerUrl;
   private String photoTip;
+  private String comment;
 }

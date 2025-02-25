@@ -28,4 +28,7 @@ public class UserImgEntity {
 
   private String imgUrl;
   private Double accuracy;
+
+  @Column(nullable = false)
+  private boolean update;
 }
