@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -164,7 +165,7 @@ public class InfluencerImgController {
 
   /** ✅ 사진 업로드 */
   @Operation(summary = "사진 업로드 및 URL 저장")
-  @PostMapping("/take")
+  @PostMapping(value = "/take", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<Map<String, Object>> uploadPhoto(@RequestParam("file") MultipartFile file) {
     try {
       // S3에 파일 업로드
