@@ -18,4 +18,7 @@ public class LocationEntity {
   private String country;
 
   private String location;
+
+  private Double latitude;
+  private Double longitude;
 }

@@ -56,7 +56,7 @@ public class SwaggerConfig {
   public GroupedOpenApi customGroupedOpenApi() {
     return GroupedOpenApi.builder()
         .group("api")
-        .pathsToMatch("/api/removebg/**") // 명확하게 파일 업로드 경로 명시
+        .pathsToMatch("/api/**") // 명확하게 파일 업로드 경로 명시
         .build();
   }
 }
