@@ -7,11 +7,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import hackthevalley.posepik_be.image.entity.InfluencerImgEntity;
 import hackthevalley.posepik_be.image.entity.UserImgEntity;
 import hackthevalley.posepik_be.image.repository.InfluencerImgRepository;
 import hackthevalley.posepik_be.image.repository.UserImgRepository;
+import hackthevalley.posepik_be.s3.service.S3Service;
 import hackthevalley.posepik_be.user.entity.UserEntity;
 import hackthevalley.posepik_be.user.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,6 +26,10 @@ public class InfluencerImgController {
   private final InfluencerImgRepository influencerImgRepository;
   private final UserImgRepository userImgRepository;
   private final UserRepository userRepository;
+  private final S3Service s3Service;
+
+  // ✅ 전역 변수 (테스트 용도)
+  private String tempUrl;
 
   @Operation(summary = "메인화면 전체 데이터 전송")
   @GetMapping("/all")
@@ -154,5 +160,44 @@ public class InfluencerImgController {
 
     // 4. 응답 반환
     return ResponseEntity.ok("유저가 성공적으로 추가되었고 이미지가 업데이트되었습니다.");
+  }
+
+  /** ✅ 사진 업로드 */
+  @Operation(summary = "사진 업로드 및 URL 저장")
+  @PostMapping("/take")
+  public ResponseEntity<Map<String, Object>> uploadPhoto(@RequestParam("file") MultipartFile file) {
+    try {
+      // S3에 파일 업로드
+      tempUrl = s3Service.uploadFile(file);
+
+      // 응답 반환
+      Map<String, Object> response = new HashMap<>();
+      response.put("status", 200);
+      response.put("message", "사진이 성공적으로 업로드되었습니다.");
+      response.put("tempUrl", tempUrl);
+
+      return ResponseEntity.ok(response);
+    } catch (Exception e) {
+      return ResponseEntity.status(500).body(Map.of("error", "파일 업로드에 실패했습니다."));
+    }
+  }
+
+  /** ✅ 업로드된 URL을 통한 정확도 반환 */
+  @Operation(summary = "정확도 조회")
+  @GetMapping("/accuracy")
+  public ResponseEntity<Map<String, Object>> getAccuracy() {
+    if (tempUrl == null) {
+      return ResponseEntity.badRequest().body(Map.of("error", "업로드된 사진이 없습니다."));
+    }
+
+    // 임의로 정확도 계산 (AI 분석 대체)
+    double accuracy = Math.random() * 100;
+
+    Map<String, Object> response = new HashMap<>();
+    response.put("status", 200);
+    response.put("accuracy", accuracy);
+    response.put("imageUrl", tempUrl);
+
+    return ResponseEntity.ok(response);
   }
 }
