@@ -14,6 +14,7 @@ import hackthevalley.posepik_be.image.entity.InfluencerImgEntity;
 import hackthevalley.posepik_be.image.entity.UserImgEntity;
 import hackthevalley.posepik_be.image.repository.InfluencerImgRepository;
 import hackthevalley.posepik_be.image.repository.UserImgRepository;
+import hackthevalley.posepik_be.opencv.ImageSimilarityService;
 import hackthevalley.posepik_be.s3.service.S3Service;
 import hackthevalley.posepik_be.user.entity.UserEntity;
 import hackthevalley.posepik_be.user.repository.UserRepository;
@@ -28,6 +29,7 @@ public class InfluencerImgController {
   private final UserImgRepository userImgRepository;
   private final UserRepository userRepository;
   private final S3Service s3Service;
+  private final ImageSimilarityService imageSimilarityService;
 
   // ✅ 전역 변수 (테스트 용도)
   private String tempUrl;
@@ -192,7 +194,13 @@ public class InfluencerImgController {
     }
 
     // 임의로 정확도 계산 (AI 분석 대체)
-    double accuracy = Math.random() * 100;
+    // 사람이 찍은거
+    String url1 = tempUrl;
+    // 인플루언서 사진
+
+    Long l = userImgRepository.findIdByImgUrl(url1);
+    String url2 = influencerImgRepository.findImgInfluencerUrlByInfluencerImgId(l);
+    double accuracy = imageSimilarityService.calculateSimilarityFromURL(url1, url2);
 
     Map<String, Object> response = new HashMap<>();
     response.put("status", 200);

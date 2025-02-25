@@ -38,10 +38,10 @@ public class S3Service {
   @Value("${cloud.aws.s3.bucket}")
   private String bucketName;
 
-  public String uploadFile(MultipartFile f) throws IOException {
+  public String uploadFile(MultipartFile file) throws IOException {
 
-    System.out.println(">>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<서비스");
-    MultipartFile file = compressImageToMultipartFile(f, 100, 100);
+    //    System.out.println(">>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<서비스");
+    //    MultipartFile file = compressImageToMultipartFile(f, 100, 100);
     String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 
     PutObjectRequest putObjectRequest =

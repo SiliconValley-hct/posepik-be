@@ -19,4 +19,7 @@ public interface UserImgRepository extends JpaRepository<UserImgEntity, Long> {
   // is_update가 true이고 view가 높은 순으로 5개 가져오기
   @Query("SELECT u FROM UserImgEntity u WHERE u.update = true ORDER BY u.accuracy DESC")
   List<UserImgEntity> findTop5ByUpdateTrueOrderByAccuracyDesc();
+
+  @Query("SELECT u.id FROM UserImgEntity u WHERE u.imgUrl = ?1")
+  Long findIdByImgUrl(String imgUrl);
 }

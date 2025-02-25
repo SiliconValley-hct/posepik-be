@@ -81,7 +81,7 @@ public class ImageSimilarityService {
   }
 
   // URL에서 이미지를 로드하고 유사도 계산
-  public static void calculateSimilarityFromURL(String url1, String url2) {
+  public static double calculateSimilarityFromURL(String url1, String url2) {
 
     try {
       URL imageUrl = new URL(url1);
@@ -97,7 +97,7 @@ public class ImageSimilarityService {
 
     if (img1.empty() || img2.empty()) {
       System.out.println("이미지를 불러올 수 없습니다.");
-      return;
+      return 0;
     }
 
     double ssimScore = calculateSSIM(img1, img2);
@@ -108,9 +108,10 @@ public class ImageSimilarityService {
     System.out.println("ORB 특징 유사도: " + orbScore);
     System.out.println("Histo 특징 유사도: " + (histoScore + 1) * 100 / 2);
 
-    double finalScore = (ssimScore * 30) + ((histoScore + 1) / 2 * 70);
-
+    double finalScore = (ssimScore * 20) + ((histoScore + 1) / 2 * 80);
     System.out.println("점수: " + finalScore);
+    return finalScore;
+
     //    System.out.println("점수: " + ((100 * ssimScore)));
 
     //    System.out.println("히스토그램 유사도: " + histScore);
