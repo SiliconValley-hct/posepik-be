@@ -22,6 +22,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }  // Spring Cloud AWS 3.x 버전이 배포된 저장소
 }
 
 dependencies {
