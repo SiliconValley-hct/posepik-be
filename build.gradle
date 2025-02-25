@@ -53,6 +53,11 @@ dependencies {
 
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:2.5.0'
+
+    // Apache HttpClient 5 - TLS/SSL 지원
+    implementation 'org.apache.httpcomponents.client5:httpclient5-fluent:5.2.1'
+    implementation 'org.apache.httpcomponents.client5:httpclient5-win:5.2.1'
+    implementation 'org.apache.httpcomponents.client5:httpclient5-cache:5.2.1'
 }
 
 

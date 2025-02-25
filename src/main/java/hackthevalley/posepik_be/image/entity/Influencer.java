@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class Influencer {
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "influencer_id")
   private Long id;
 

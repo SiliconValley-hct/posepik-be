@@ -12,7 +12,7 @@ import lombok.Setter;
 @Table(name = "influencer_img")
 public class InfluencerImgEntity {
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "influencerImg_id")
   private Long id;
 

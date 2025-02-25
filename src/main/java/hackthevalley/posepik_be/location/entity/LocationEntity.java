@@ -11,7 +11,7 @@ import lombok.Setter;
 @Table(name = "location")
 public class LocationEntity {
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "location_id")
   private long id;
 

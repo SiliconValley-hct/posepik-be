@@ -14,6 +14,7 @@ import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
 public class SwaggerConfig {
+
   @Value("${server.servlet.context-path:}")
   private String contextPath;
 
@@ -36,22 +37,26 @@ public class SwaggerConfig {
                         .bearerFormat("JWT")))
         .info(
             new Info()
-                .title("module - API")
+                .title("Remove Background API - Posepik")
                 .version("1.0")
                 .description(
                     """
-                                        # API 문서
-                                        ## 인증 방법
-                                        -
-                                        ## 주의사항
-                                        -
-                                        ## 문의
-                                        -
-                                        """));
+                                    ## 📸 이미지 배경 제거 API 문서
+
+                                    **인증**: JWT 토큰을 사용하세요.
+
+                                    **파일 업로드**: `multipart/form-data`로 이미지를 업로드하세요.
+
+                                    **응답 형식**: `image/png`
+
+                                    """));
   }
 
   @Bean
   public GroupedOpenApi customGroupedOpenApi() {
-    return GroupedOpenApi.builder().group("api").pathsToMatch("/**").build();
+    return GroupedOpenApi.builder()
+        .group("api")
+        .pathsToMatch("/api/removebg/**") // 명확하게 파일 업로드 경로 명시
+        .build();
   }
 }
