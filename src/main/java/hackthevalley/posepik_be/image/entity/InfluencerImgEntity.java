@@ -19,6 +19,10 @@ public class InfluencerImgEntity {
   @JoinColumn(name = "location_id", nullable = false)
   private LocationEntity location;
 
+  @ManyToOne
+  @JoinColumn(name = "influencer_id", nullable = false)
+  private Influencer influencer;
+
   private Long view;
   private String outlineImgUrl;
   private String imgInfluencerUrl;

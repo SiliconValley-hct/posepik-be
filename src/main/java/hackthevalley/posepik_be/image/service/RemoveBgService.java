@@ -3,7 +3,6 @@ package hackthevalley.posepik_be.image.service;
 import static org.bytedeco.opencv.global.opencv_imgcodecs.*;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
@@ -12,12 +11,10 @@ import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
-import org.bytedeco.opencv.opencv_core.Mat;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import hackthevalley.posepik_be.opencv.ImageSimilarityService;
 import lombok.RequiredArgsConstructor;
 
 @Service

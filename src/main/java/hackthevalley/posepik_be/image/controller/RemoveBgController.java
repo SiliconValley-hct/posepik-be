@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import hackthevalley.posepik_be.image.service.RemoveBgService;
-import hackthevalley.posepik_be.opencv.ImageSimilarityService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
